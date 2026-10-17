@@ -1,0 +1,79 @@
+///* =================================================================================
+//File name:       PARK.H
+//===================================================================================*/
+//
+//#ifndef __PARK_H__
+//#define __PARK_H__
+//
+//typedef struct {  _iq  Alpha;  		// Input: stationary d-axis stator variable
+//				  _iq  Beta;	 	// Input: stationary q-axis stator variable
+//				  _iq  Angle;		// Input: rotating angle (pu)
+//				  _iq  Ds;			// Output: rotating d-axis stator variable
+//				  _iq  Qs;			// Output: rotating q-axis stator variable
+//				  _iq  Sine;
+//				  _iq  Cosine;
+//		 	 	} PARK;
+//
+///*-----------------------------------------------------------------------------
+//Default initalizer for the PARK object.
+//-----------------------------------------------------------------------------*/
+//#define PARK_DEFAULTS {   0, \
+//                          0, \
+//                          0, \
+//                          0, \
+//                          0, \
+//						  0, \
+//                          0, \
+//              			  }
+//
+///*------------------------------------------------------------------------------
+//	PARK Transformation Macro Definition
+//------------------------------------------------------------------------------*/
+//
+//
+//#define PARK_MACRO(v)											\
+//																\
+//	v.Ds = _IQmpy(v.Alpha,v.Cosine) + _IQmpy(v.Beta,v.Sine);	\
+//    v.Qs = _IQmpy(v.Beta,v.Cosine) - _IQmpy(v.Alpha,v.Sine);
+//
+//#endif // __PARK_H__
+/* =================================================================================
+File name:       PARK.H
+
+Description:
+Header file containing constants, data type definitions, and
+function prototypes for the PARK.
+
+=====================================================================================
+ History:
+-------------------------------------------------------------------------------------
+ 05-07-2013 Version 1.0
+------------------------------------------------------------------------------*/
+
+typedef struct {  float  Alpha;     // Input: stationary d-axis stator variable
+                  float  Beta;      // Input: stationary q-axis stator variable
+                  float  Angle;     // Input: rotating angle (rad)
+                  float  Ds;        // Output: rotating d-axis stator variable
+                  float  Qs;        // Output: rotating q-axis stator variable
+                  void  (*calc)();  // Pointer to calculation function
+                 } PARK;
+
+typedef PARK *PARK_handle;
+
+/*-----------------------------------------------------------------------------
+Default initalizer for the PARK object.
+-----------------------------------------------------------------------------*/                     
+#define PARK_DEFAULTS {   0, \
+                          0, \
+                          0, \
+                          0, \
+                          0, \
+                          (void (*)(unsigned int))park_calc }
+
+/*------------------------------------------------------------------------------
+Prototypes for the functions in PARK.C
+------------------------------------------------------------------------------*/
+void park_calc(PARK_handle);
+
+
+
